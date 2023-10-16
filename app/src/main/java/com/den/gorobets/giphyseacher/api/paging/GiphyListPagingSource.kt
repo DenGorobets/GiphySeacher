@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import coil.network.HttpException
 import com.den.gorobets.giphyseacher.api.ApiHelper
-import com.den.gorobets.giphyseacher.api.dto.Datum
+import com.den.gorobets.giphyseacher.model.dto.Datum
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ServerResponseException
@@ -36,7 +36,7 @@ class GiphyListPagingSource(
             val repos = response?.data ?: emptyList()
             val nextKey = if (repos.isEmpty()) {
                 null
-            } else position + (params.loadSize / 25)
+            } else position + (params.loadSize / NETWORK_PAGE_SIZE)
 
             LoadResult.Page(
                 data = repos,
@@ -56,5 +56,9 @@ class GiphyListPagingSource(
         } catch (e: ServerResponseException) {
             LoadResult.Error(e)
         }
+    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 25
     }
 }

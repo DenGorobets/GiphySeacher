@@ -1,6 +1,6 @@
 package com.den.gorobets.giphyseacher.api
 
-import com.den.gorobets.giphyseacher.api.dto.GiphySearchListDTO
+import com.den.gorobets.giphyseacher.model.dto.GiphySearchListDTO
 
 
 interface ApiHelper {

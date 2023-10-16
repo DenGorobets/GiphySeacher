@@ -1,7 +1,7 @@
 package com.den.gorobets.giphyseacher.api.http_engine
 
 import com.den.gorobets.giphyseacher.GiphyApplication.Companion.DEFAULT_LANGUAGE
-import com.den.gorobets.giphyseacher.api.dto.GiphySearchListDTO
+import com.den.gorobets.giphyseacher.model.dto.GiphySearchListDTO
 import javax.inject.Inject
 
 class EngineServiceImpl @Inject constructor(

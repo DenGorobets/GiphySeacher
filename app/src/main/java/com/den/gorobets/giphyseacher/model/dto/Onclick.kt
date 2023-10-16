@@ -1,4 +1,4 @@
-package com.den.gorobets.giphyseacher.api.dto
+package com.den.gorobets.giphyseacher.model.dto
 
 import androidx.annotation.Keep
 import kotlinx.serialization.Serializable

@@ -1,7 +1,7 @@
 package com.den.gorobets.giphyseacher.api
 
-import com.den.gorobets.giphyseacher.api.dto.GiphySearchListDTO
 import com.den.gorobets.giphyseacher.api.http_engine.EngineService
+import com.den.gorobets.giphyseacher.model.dto.GiphySearchListDTO
 import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(

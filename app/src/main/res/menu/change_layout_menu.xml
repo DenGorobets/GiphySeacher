@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/changeLayoutButton"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/change_layout_button"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_linear_layout"
+                android:icon="@drawable/baseline_view_day_24"
+                android:title="@string/linear_view" />
+            <item
+                android:id="@+id/menu_grid_layout"
+                android:icon="@drawable/baseline_grid_view_24"
+                android:title="@string/grid_view" />
+        </menu>
+    </item>
+</menu>

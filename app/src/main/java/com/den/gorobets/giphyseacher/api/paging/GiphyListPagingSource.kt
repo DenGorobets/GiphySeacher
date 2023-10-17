@@ -43,8 +43,6 @@ class GiphyListPagingSource(
                 prevKey = if (position == 1) null else position - 1,
                 nextKey = nextKey
             )
-        } catch (e: Exception) {
-            LoadResult.Error(e)
         } catch (e: IOException) {
             LoadResult.Error(e)
         } catch (e: HttpException) {
@@ -54,6 +52,8 @@ class GiphyListPagingSource(
         } catch (e: ClientRequestException) {
             LoadResult.Error(e)
         } catch (e: ServerResponseException) {
+            LoadResult.Error(e)
+        } catch (e: Exception) {
             LoadResult.Error(e)
         }
     }

@@ -18,11 +18,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.GiphySearchActivity"
+            android:name=".ui.activities.GiphySearchActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.activity.GiphySplashActivity"
+            android:name=".ui.activities.GiphySplashActivity"
             android:exported="true"
             android:theme="@style/Theme.GiphySearcherSplash"
             android:windowSoftInputMode="adjustResize">

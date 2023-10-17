@@ -1,7 +1,7 @@
 import java.util.Properties
 
 val properties: Properties = Properties()
-val localPropertiesFile: File = rootProject.file("local.properties")
+val localPropertiesFile: File = rootProject.file("gradle.properties")
 if (localPropertiesFile.exists()) {
     properties.load(localPropertiesFile.inputStream())
 }

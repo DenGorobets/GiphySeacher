@@ -15,10 +15,6 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-const val API_DOMAIN = "api.giphy.com"
-const val API_PATH = "v1/gifs/search"
-const val API_KEY = "iUzXS9PhXmtxUTmJunz5LH5Ed6vrbwJ3&"
-
 class EngineHttpClient @Inject constructor() {
 
     private val json = Json {

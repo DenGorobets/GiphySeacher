@@ -7,10 +7,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.den.gorobets.giphyseacher.model.dto.Datum
 import com.den.gorobets.giphyseacher.model.repo.GiphyRepository
-import com.den.gorobets.giphyseacher.utils.DEFAULT_QUERY
 import com.den.gorobets.giphyseacher.utils.UiAction
 import com.den.gorobets.giphyseacher.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +27,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val LAST_SEARCH_QUERY: String = "last_search_query"
-private const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
-
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class GiphyViewModel @Inject constructor(
     private val repository: GiphyRepository,
@@ -102,5 +100,11 @@ class GiphyViewModel @Inject constructor(
         stateHandle[LAST_SEARCH_QUERY] = state.value.query
         stateHandle[LAST_QUERY_SCROLLED] = state.value.lastQueryScrolled
         super.onCleared()
+    }
+
+    companion object {
+        const val LAST_SEARCH_QUERY: String = "last_search_query"
+        const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
+        const val DEFAULT_QUERY: String = ""
     }
 }

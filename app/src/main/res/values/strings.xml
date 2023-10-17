@@ -2,7 +2,6 @@
     <string name="app_name">Giphy Searcher</string>
     <string name="card_image">Card image</string>
     <string name="profile_name">Profile name</string>
-    <string name="icon_image">Profile icon</string>
     <string name="search">Search on Giphy</string>
     <string name="no_internet_connection">Loaded data is empty</string>
     <string name="refresh">Refresh</string>

@@ -1,6 +1,7 @@
 package com.den.gorobets.giphyseacher.api.http_engine
 
 import android.util.Log
+import com.den.gorobets.giphyseacher.BuildConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.RedirectResponseException
@@ -27,9 +28,9 @@ class EngineChecker @Inject constructor(
             val response = client.create()?.get {
                 url {
                     protocol = URLProtocol.HTTPS
-                    host = API_DOMAIN
+                    host = BuildConfig.API_DOMAIN
                     path(path)
-                    parameter("api_key", API_KEY)
+                    parameter("api_key", BuildConfig.API_KEY)
                     parameters.forEach { (key, value) ->
                         parameter(key, value.toString())
                     }

@@ -1,6 +1,6 @@
 package com.den.gorobets.giphyseacher.utils
 
-const val DEFAULT_QUERY: String = ""
+import com.den.gorobets.giphyseacher.viewmodel.GiphyViewModel.Companion.DEFAULT_QUERY
 
 data class UiState(
 

@@ -33,12 +33,12 @@
             android:paddingVertical="8dp">
 
             <io.supercharge.shimmerlayout.ShimmerLayout
-                android:layout_margin="16dp"
                 android:layout_width="0dp"
-                android:background="@drawable/card_profile_data_background"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
+                android:background="@drawable/card_profile_data_background"
                 app:shimmer_animation_duration="1200"
                 app:shimmer_auto_start="true">
 

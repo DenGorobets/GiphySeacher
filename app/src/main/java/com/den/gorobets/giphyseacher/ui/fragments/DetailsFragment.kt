@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.den.gorobets.giphyseacher.R
 import com.den.gorobets.giphyseacher.databinding.FragmentDetailsBinding
 import com.den.gorobets.giphyseacher.utils.loadImage
 import com.den.gorobets.giphyseacher.viewmodel.DetailViewModel
@@ -19,6 +20,7 @@ class DetailsFragment : Fragment() {
 
     private val binding by lazy { FragmentDetailsBinding.inflate(layoutInflater) }
     private val viewModel by viewModels<DetailViewModel>()
+    private val argument: String? by lazy { arguments?.getString(getString(R.string.key_url)) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +41,6 @@ class DetailsFragment : Fragment() {
             binding.giphyImage.loadImage(giphyUrl)
         }.launchIn(lifecycleScope)
 
-        val argument = arguments?.getString("giphy_url")
         viewModel.setGiphyUrl(argument.orEmpty())
     }
 }

@@ -10,4 +10,5 @@
     <string name="change_layout_button">Change layout button</string>
     <string name="linear_view">Linear view</string>
     <string name="grid_view">Grid view</string>
+    <string name="key_url">giphy_url</string>
 </resources>

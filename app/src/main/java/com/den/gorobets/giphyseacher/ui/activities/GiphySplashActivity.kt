@@ -1,4 +1,4 @@
-package com.den.gorobets.giphyseacher.ui.activity
+package com.den.gorobets.giphyseacher.ui.activities
 
 import android.content.Intent
 import android.os.Bundle

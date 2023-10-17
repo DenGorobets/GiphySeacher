@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_animation_duration="1200"
+            app:shimmer_auto_start="true">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/card_profile_data_background"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+            <io.supercharge.shimmerlayout.ShimmerLayout
+                android:layout_margin="16dp"
+                android:layout_width="0dp"
+                android:background="@drawable/card_profile_data_background"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                app:shimmer_animation_duration="1200"
+                app:shimmer_auto_start="true">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shimmer_back" />
+            </io.supercharge.shimmerlayout.ShimmerLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

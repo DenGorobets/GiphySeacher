@@ -37,11 +37,13 @@ class GiphyViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _state: StateFlow<UiState> = MutableStateFlow(UiState())
-    val state get() = _state
+    val state: StateFlow<UiState> get() = _state
 
     val pagingDataFlow: Flow<PagingData<Datum>>
     val accept: (UiAction) -> Unit
 
+    private val _recyclerLayout = MutableStateFlow(0)
+    val recyclerLayout: StateFlow<Int> = _recyclerLayout
 
     init {
         val initialQuery: String = stateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
@@ -87,6 +89,10 @@ class GiphyViewModel @Inject constructor(
         accept = { action ->
             viewModelScope.launch { actionStateFlow.emit(action) }
         }
+    }
+
+    fun setLayoutType(type: Int) {
+        _recyclerLayout.value = type
     }
 
     private fun getGameSearchList(query: String = "") =

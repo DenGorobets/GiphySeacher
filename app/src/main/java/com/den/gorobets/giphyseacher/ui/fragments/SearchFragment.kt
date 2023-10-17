@@ -18,9 +18,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import com.den.gorobets.giphyseacher.R
 import com.den.gorobets.giphyseacher.databinding.FragmentSearchBinding
 import com.den.gorobets.giphyseacher.model.dto.Datum
@@ -56,9 +56,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return binding.root
     }
@@ -90,27 +88,21 @@ class SearchFragment : Fragment() {
         val header = GiphyLoadStateAdapter { gifAdapter.retry() }
 
         viewModel.recyclerLayout.onEach { type ->
-            when (type) {
-                0 -> searchGiphyListRecyclerView.layoutManager =
-                    LinearLayoutManager(
-                        requireContext(),
-                        LinearLayoutManager.VERTICAL,
-                        false
-                    )
-
-                1 -> searchGiphyListRecyclerView.layoutManager =
-                    GridLayoutManager(
-                        requireContext(),
-                        2
-                    )
+            val rowsCount = when (type) {
+                0 -> 1
+                1 -> 2
+                else -> 1
             }
+
+            searchGiphyListRecyclerView.layoutManager = StaggeredGridLayoutManager(
+                rowsCount, VERTICAL
+            )
+
         }.launchIn(lifecycleScope)
 
-        searchGiphyListRecyclerView.adapter =
-            gifAdapter.withLoadStateHeaderAndFooter(
-                header = header,
-                footer = GiphyLoadStateAdapter { gifAdapter.retry() }
-            )
+        searchGiphyListRecyclerView.adapter = gifAdapter.withLoadStateHeaderAndFooter(
+            header = header,
+            footer = GiphyLoadStateAdapter { gifAdapter.retry() })
 
         bindSearch(uiState, onQueryChanged = uiActions)
         bindList(
@@ -136,68 +128,57 @@ class SearchFragment : Fragment() {
 
         refreshButton.setOnClickListener { repoAdapter.retry() }
 
-        val notLoading = repoAdapter.loadStateFlow
-            .distinctUntilChangedBy { it.source.refresh }
+        val notLoading = repoAdapter.loadStateFlow.distinctUntilChangedBy { it.source.refresh }
             .map { it.source.refresh is LoadState.NotLoading }
 
-        val hasNotScrolledForCurrentSearch = uiState
-            .map { it.hasNotScrolledForCurrentSearch }
-            .distinctUntilChanged()
+        val hasNotScrolledForCurrentSearch =
+            uiState.map { it.hasNotScrolledForCurrentSearch }.distinctUntilChanged()
 
         val shouldScrollToTop = combine(
-            notLoading,
-            hasNotScrolledForCurrentSearch,
-            Boolean::and
+            notLoading, hasNotScrolledForCurrentSearch, Boolean::and
         ).distinctUntilChanged()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                listOf(
-                    async {
-                        pagingData.collectLatest(repoAdapter::submitData)
-                    },
-                    async {
-                        shouldScrollToTop.collect { shouldScroll ->
-                            if (shouldScroll) searchGiphyListRecyclerView.scrollToPosition(0)
-                        }
-                    },
-                    async {
-                        repoAdapter.loadStateFlow.collect { loadState ->
+                listOf(async {
+                    pagingData.collectLatest(repoAdapter::submitData)
+                }, async {
+                    shouldScrollToTop.collect { shouldScroll ->
+                        if (shouldScroll) searchGiphyListRecyclerView.scrollToPosition(0)
+                    }
+                }, async {
+                    repoAdapter.loadStateFlow.collect { loadState ->
 
-                            val isListEmpty =
-                                loadState.refresh is LoadState.NotLoading && repoAdapter.itemCount == 0
+                        val isListEmpty =
+                            loadState.refresh is LoadState.NotLoading && repoAdapter.itemCount == 0
 
-                            connectionTextView.customVisible(isListEmpty)
-                            searchGiphyListRecyclerView.customVisible(!isListEmpty)
-                            viewModel.recyclerLayout.onEach { type ->
-                                when (type) {
-                                    0 -> linearAnimationView.customVisible(loadState.source.refresh is LoadState.Loading)
-                                    1 -> gridAnimationView.customVisible(loadState.source.refresh is LoadState.Loading)
-                                }
-                            }.launchIn(lifecycleScope)
-                            refreshButton.customVisible(loadState.source.refresh is LoadState.Error)
-
-                            val errorState = loadState.source.append as? LoadState.Error
-                                ?: loadState.source.prepend as? LoadState.Error
-                                ?: loadState.append as? LoadState.Error
-                                ?: loadState.prepend as? LoadState.Error
-                            errorState?.let {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Sorry, ${it.error}",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                        connectionTextView.customVisible(isListEmpty)
+                        searchGiphyListRecyclerView.customVisible(!isListEmpty)
+                        viewModel.recyclerLayout.onEach { type ->
+                            when (type) {
+                                0 -> linearAnimationView.customVisible(loadState.source.refresh is LoadState.Loading)
+                                1 -> gridAnimationView.customVisible(loadState.source.refresh is LoadState.Loading)
                             }
+                        }.launchIn(lifecycleScope)
+                        refreshButton.customVisible(loadState.source.refresh is LoadState.Error)
+
+                        val errorState = loadState.source.append as? LoadState.Error
+                            ?: loadState.source.prepend as? LoadState.Error
+                            ?: loadState.append as? LoadState.Error
+                            ?: loadState.prepend as? LoadState.Error
+                        errorState?.let {
+                            Toast.makeText(
+                                requireContext(), "Sorry, ${it.error}", Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
-                )
+                })
             }
         }
     }
 
     private fun FragmentSearchBinding.bindSearch(
-        uiState: StateFlow<UiState>,
-        onQueryChanged: (UiAction.Search) -> Unit
+        uiState: StateFlow<UiState>, onQueryChanged: (UiAction.Search) -> Unit
     ) {
 
         searchGiphyView.setOnQueryTextListener(object :
@@ -205,6 +186,7 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return if (!query.isNullOrBlank()) {
                     updateGamesFromInput(onQueryChanged)
+                    searchGiphyView.clearFocus()
                     true
                 } else false
             }
@@ -215,12 +197,9 @@ class SearchFragment : Fragment() {
         })
 
         viewLifecycleOwner.lifecycleScope.launch {
-            uiState
-                .map { it.query }
-                .distinctUntilChanged()
-                .collect { query ->
-                    searchGiphyView.setQuery(query, false)
-                }
+            uiState.map { it.query }.distinctUntilChanged().collect { query ->
+                searchGiphyView.setQuery(query, false)
+            }
         }
 
         searchGiphyView.setOnKeyListener { _, keyCode, event ->
